@@ -19,7 +19,7 @@ Jellyfin 10.9 added support for lyrics this script helps you to get lyrics effor
 Note: I would suggest you give full paht and not relative path
 
 ```python
-  directory_path = '/xxxx/xxxx/xxx
+  directory_path = '/xxxx/xxxx/xxx'
 ```
 
 ## Run python Script
