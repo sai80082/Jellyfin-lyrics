@@ -36,6 +36,7 @@ def collect_flac_files(directory_path):
 
 Found_lyrics = 0
 Missing_lyrics = 0
+Total_lyrics = 0
 print("Starting the lyrics fetching process...")
 print("Writing logs to lyrics_fetch.log")
 
