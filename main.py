@@ -57,6 +57,10 @@ try:
             Missing_lyrics = Missing_lyrics + 1
             continue
         try:
+            if (lyrics is  None):
+                logging.info("Lyrics not found for the song: %s", file_path)
+                Missing_lyrics = Missing_lyrics + 1
+                continue
             with open(new_file_path, 'w') as f:
                 f.write(lyrics)
                 Total_lyrics = Total_lyrics + 1
