@@ -20,7 +20,7 @@ def get_lyrics(artist, title, album, duration):
     response = requests.get(url, params=params)
     if response.status_code == 200:
         logging.info("Found Lyrics for the song: %s", title)
-    return response.json()["syncedLyrics"]
+    return response.json()["syncedLyrics"].encoding('utf-8')
 
 def get_song_details(file_path):
     audio = TinyTag.get(file_path)
@@ -36,6 +36,7 @@ def collect_flac_files(directory_path):
 
 Found_lyrics = 0
 Missing_lyrics = 0
+Total_lyrics = 0
 print("Starting the lyrics fetching process...")
 print("Writing logs to lyrics_fetch.log")
 
@@ -56,6 +57,10 @@ try:
             Missing_lyrics = Missing_lyrics + 1
             continue
         try:
+            if (lyrics is  None):
+                logging.info("Lyrics not found for the song: %s", file_path)
+                Missing_lyrics = Missing_lyrics + 1
+                continue
             with open(new_file_path, 'w') as f:
                 f.write(lyrics)
                 Total_lyrics = Total_lyrics + 1
