@@ -26,13 +26,13 @@ def get_song_details(file_path):
     audio = TinyTag.get(file_path)
     return audio.album, audio.title, audio.artist, int(audio.duration)
 
-def collect_flac_files(directory_path):
-    flac_files = []
+def collect_audio_files(directory_path):
+    audio_files = []
     for root, _, files in os.walk(directory_path):
         for file in files:
-            if file.endswith('.flac'):
-                flac_files.append(os.path.join(root, file))
-    return flac_files
+            if file.endswith(('.flac', '.mp3', '.wav', '.ogg', '.aac', '.wma')):
+                audio_files.append(os.path.join(root, file))
+    return audio_files
 
 Found_lyrics = 0
 Missing_lyrics = 0
@@ -41,9 +41,9 @@ print("Starting the lyrics fetching process...")
 print("Writing logs to lyrics_fetch.log")
 
 try:
-    flac_files = collect_flac_files(directory_path)
-    total_files = len(flac_files)
-    for idx, file_path in enumerate(flac_files, start=1):
+    audio_files = collect_audio_files(directory_path)
+    total_files = len(audio_files)
+    for idx, file_path in enumerate(audio_files, start=1):
         logging.info("Processing file %s of %s - %s", idx, total_files, file_path)
         new_file_path = os.path.splitext(file_path)[0] + '.lrc'
         if os.path.exists(new_file_path):
