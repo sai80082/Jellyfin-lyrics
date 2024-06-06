@@ -149,12 +149,9 @@ try:
             continue
         try:
             album, title, artist, duration = get_song_details(file_path)
-            print(title)
             try:
                 lyrics = get_lyrics(artist, title, album, duration)
-                print(lyrics)
             except Exception as e:
-                print("trying netease!")
                 lyrics = get_lyrics_netease(artist, title, album, duration)
         except Exception as e:
             print("error!")
