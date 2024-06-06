@@ -154,7 +154,6 @@ try:
             except Exception as e:
                 lyrics = get_lyrics_netease(artist, title, album, duration)
         except Exception as e:
-            print("error!")
             logging.error("Error in fetching lyrics for the song: %s", file_path)
             Missing_lyrics = Missing_lyrics + 1
             continue
