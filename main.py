@@ -149,10 +149,15 @@ try:
             continue
         try:
             album, title, artist, duration = get_song_details(file_path)
-            lyrics = get_lyrics(artist, title, album, duration)
-            if not lyrics:
+            print(title)
+            try:
+                lyrics = get_lyrics(artist, title, album, duration)
+                print(lyrics)
+            except Exception as e:
+                print("trying netease!")
                 lyrics = get_lyrics_netease(artist, title, album, duration)
         except Exception as e:
+            print("error!")
             logging.error("Error in fetching lyrics for the song: %s", file_path)
             Missing_lyrics = Missing_lyrics + 1
             continue
