@@ -57,7 +57,7 @@ def merge_lyrics_netease(lrc_dict, tlyric_dict, unformatted_lines):
 def get_similarity(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
-def get_lyrics_netease(title, artist, album, duration):
+def get_lyrics_netease(artist, title, album, duration):
     search_keywords = [
         f"{artist} - {album} - {title}",
         f"{album} - {title}",
@@ -67,7 +67,7 @@ def get_lyrics_netease(title, artist, album, duration):
     results = []
 
     for keyword in search_keywords:
-        search_result = search_song_netease(keyword)
+        search_result = search_song(keyword)
         if not search_result:
             continue
 
@@ -75,13 +75,13 @@ def get_lyrics_netease(title, artist, album, duration):
         songs = [song for song in songs if abs(song['duration'] / 1000 - duration) <= 3]
 
         for song in songs[:3]:
-            lyrics_content, trans_lyrics_content = download_lyrics_netease(song['id'])
+            lyrics_content, trans_lyrics_content = download_lyrics(song['id'])
 
             if lyrics_content:
-                lrc_dict, unformatted_lines = parse_lyrics_netease(lyrics_content)
+                lrc_dict, unformatted_lines = parse_lyrics(lyrics_content)
                 if len(lrc_dict) >= 5:
-                    tlyric_dict, _ = parse_lyrics_netease(trans_lyrics_content if trans_lyrics_content else '')
-                    merged = merge_lyrics_netease(lrc_dict, tlyric_dict, unformatted_lines)
+                    tlyric_dict, _ = parse_lyrics(trans_lyrics_content if trans_lyrics_content else '')
+                    merged = merge_lyrics(lrc_dict, tlyric_dict, unformatted_lines)
                     similarity = (
                         get_similarity(title, song['name']) +
                         get_similarity(artist, ', '.join([artist['name'] for artist in song['artists']])) +
@@ -99,7 +99,12 @@ def get_lyrics_netease(title, artist, album, duration):
         return None
 
     results.sort(key=lambda x: x['similarity'], reverse=True)
-    return results[0]['lyrics'] if results else None
+    top_result = results[0] if results else None
+
+    if top_result and top_result['similarity'] >= 0.33:
+        return top_result['lyrics']
+    else:
+        return None
 
 def get_lyrics(artist, title, album, duration):
     url = "https://lrclib.net/api/get"
