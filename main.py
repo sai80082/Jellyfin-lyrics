@@ -8,7 +8,7 @@ import requests
 # Configure logging
 logging.basicConfig(filename='lyrics_fetch.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-directory_path = '/home/serveradmin/media/musicr'
+directory_path = '/home/serveradmin/media/music'
 def search_song_netease(keyword):
     api_url = f"https://music.163.com/api/search/get?s={keyword}&type=1&limit=50"
     response = requests.get(api_url)
@@ -67,7 +67,7 @@ def get_lyrics_netease(artist, title, album, duration):
     results = []
 
     for keyword in search_keywords:
-        search_result = search_song(keyword)
+        search_result = search_song_netease(keyword)
         if not search_result:
             continue
 
@@ -75,13 +75,13 @@ def get_lyrics_netease(artist, title, album, duration):
         songs = [song for song in songs if abs(song['duration'] / 1000 - duration) <= 3]
 
         for song in songs[:3]:
-            lyrics_content, trans_lyrics_content = download_lyrics(song['id'])
+            lyrics_content, trans_lyrics_content = download_lyrics_netease(song['id'])
 
             if lyrics_content:
-                lrc_dict, unformatted_lines = parse_lyrics(lyrics_content)
+                lrc_dict, unformatted_lines = parse_lyrics_netease(lyrics_content)
                 if len(lrc_dict) >= 5:
-                    tlyric_dict, _ = parse_lyrics(trans_lyrics_content if trans_lyrics_content else '')
-                    merged = merge_lyrics(lrc_dict, tlyric_dict, unformatted_lines)
+                    tlyric_dict, _ = parse_lyrics_netease(trans_lyrics_content if trans_lyrics_content else '')
+                    merged = merge_lyrics_netease(lrc_dict, tlyric_dict, unformatted_lines)
                     similarity = (
                         get_similarity(title, song['name']) +
                         get_similarity(artist, ', '.join([artist['name'] for artist in song['artists']])) +
