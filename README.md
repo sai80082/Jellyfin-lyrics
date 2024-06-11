@@ -1,7 +1,7 @@
 # Jellyfin-lyrics
 Download lyrics for all of your music
 
-Jellyfin 10.9 added support for lyrics this script helps you to get lyrics effortlessly and make your experience better.Happy Singing!!
+Jellyfin 10.9 added support for lyrics this script helps you to get lyrics effortlessly and make your experience better. Happy Singing!!
 
 ## Clone repository
 
@@ -9,17 +9,18 @@ Jellyfin 10.9 added support for lyrics this script helps you to get lyrics effor
  git clone https://github.com/sai80082/Jellyfin-lyrics.git
 ```
 
-## Install library tinytag
+## Install library tinytag and alive_progress
 
 ```python
   pip install tinytag
+  pip install alive_progress
 ```
-## Change your directory with your music library directory in python script
+## Enter your music storage directory
 
-Note: I would suggest you give full paht and not relative path
+Enter the directory where you store your music, use absolute paths. The directory will be requested by console when starting the application.
 
-```python
-  directory_path = '/xxxx/xxxx/xxx'
+```
+  '/xxxx/xxxx/xxx'
 ```
 
 ## Run python Script
