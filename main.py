@@ -6,7 +6,8 @@ import requests
 # Configure logging
 logging.basicConfig(filename='lyrics_fetch.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-directory_path = '/home/serveradmin/media/music'
+# Ask the user for the directory to scan
+directory_path = input("Please enter the directory path to scan for music files: ")
 
 def get_lyrics(artist, title, album, duration):
     url = "https://lrclib.net/api/get"
@@ -20,7 +21,10 @@ def get_lyrics(artist, title, album, duration):
     response = requests.get(url, params=params)
     if response.status_code == 200:
         logging.info("Found Lyrics for the song: %s", title)
-    return response.json()["syncedLyrics"].encoding('utf-8')
+        return response.json()["syncedLyrics"].encode('utf-8')
+    else:
+        logging.info("Lyrics not found for the song: %s", title)
+        return None
 
 def get_song_details(file_path):
     audio = TinyTag.get(file_path)
@@ -54,16 +58,16 @@ try:
             lyrics = get_lyrics(artist, title, album, duration)
         except Exception as e:
             logging.error("Error in fetching lyrics for the song: %s", file_path)
-            Missing_lyrics = Missing_lyrics + 1
+            Missing_lyrics += 1
             continue
         try:
-            if (lyrics is  None):
+            if lyrics is None:
                 logging.info("Lyrics not found for the song: %s", file_path)
-                Missing_lyrics = Missing_lyrics + 1
+                Missing_lyrics += 1
                 continue
             with open(new_file_path, 'w') as f:
-                f.write(lyrics)
-                Total_lyrics = Total_lyrics + 1
+                f.write(lyrics.decode('utf-8'))
+                Found_lyrics += 1
         except Exception as e:
             logging.error("Error in writing lyrics for the song: %s", file_path)
             continue
@@ -71,6 +75,10 @@ except KeyboardInterrupt:
     logging.info("Exiting the program due to keyboard interrupt")
     exit(0)
 
+# Log the total statistics
+logging.info("Total songs processed: %s", total_files)
+logging.info("Total songs with lyrics found: %s", Found_lyrics)
+logging.info("Total songs with lyrics missing: %s", Missing_lyrics)
 
 print("Total songs processed:", total_files)
 print("Total songs with lyrics found:", Found_lyrics)
