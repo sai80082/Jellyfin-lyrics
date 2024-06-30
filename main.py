@@ -20,7 +20,11 @@ def get_lyrics(artist, title, album, duration):
     response = requests.get(url, params=params)
     if response.status_code == 200:
         logging.info("Found Lyrics for the song: %s", title)
-    return response.json()["syncedLyrics"].encoding('utf-8')
+    lyrics = response.json()["syncedLyrics"]
+    if (lyrics is None):
+        logging.info("Synced Lyrics not found for the song: %s, falling back to plain lyrics", title)
+        lyrics = response.json()["plainLyrics"]
+    return lyrics
 
 def get_song_details(file_path):
     audio = TinyTag.get(file_path)
