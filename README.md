@@ -15,6 +15,15 @@ Jellyfin 10.9 added support for lyrics, this script helps you to get lyrics effo
   pip install tinytag
 ```
 
+```
+## Change your directory with your music library directory in python script
+
+Note: I would suggest you give full paht and not relative path
+
+```python
+  directory_path = '/xxxx/xxxx/xxx'
+```
+
 ## Run python Script
 
 ```python
