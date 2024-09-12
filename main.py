@@ -6,8 +6,7 @@ import requests
 # Configure logging
 logging.basicConfig(filename='lyrics_fetch.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Ask the user for the directory to scan
-directory_path = "your OS_path to where your jellyfin musik folder is saved"
+directory_path = '/home/serveradmin/media/music'
 
 def get_lyrics(artist, title, album, duration):
     url = "https://lrclib.net/api/get"
