@@ -12,7 +12,7 @@ Jellyfin 10.9 added support for lyrics, this script helps you to get lyrics effo
 ## Install library tinytag
 
 ```python
-  pip install tinytag
+  pip install tinytag tqdm
 ```
 
 ## Change your directory with your music library directory in python script
