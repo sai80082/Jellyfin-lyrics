@@ -2,11 +2,15 @@ import logging
 from tinytag import TinyTag
 import os
 import requests
+import sys
 
 # Configure logging
 logging.basicConfig(filename='lyrics_fetch.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-directory_path = '/home/serveradmin/media/music'
+directory_path = '.'
+
+if len(sys.argv) > 1:
+    directory_path = sys.argv[1]
 
 def get_lyrics(artist, title, album, duration):
     url = "https://lrclib.net/api/get"
@@ -65,7 +69,7 @@ try:
                 logging.info("Lyrics not found for the song: %s", file_path)
                 Missing_lyrics = Missing_lyrics + 1
                 continue
-            with open(new_file_path, 'w') as f:
+            with open(new_file_path, 'w', encoding="utf-8") as f:
                 f.write(lyrics)
                 Total_lyrics = Total_lyrics + 1
         except Exception as e:
